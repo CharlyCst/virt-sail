@@ -162,6 +162,10 @@ pub fn sail_ones<const N: usize>(_n: usize) -> BitVector<N> {
     !BitVector::<N>::new(0)
 }
 
+pub fn sail_zeros<const N: usize>(_n: usize) -> BitVector<N> {
+    BitVector::<N>::new(0)
+}
+
 pub fn min_int(v1: usize, v2: usize) -> usize {
     min(v1, v2)
 }
@@ -377,6 +381,17 @@ impl<const N: usize> ops::Not for BitVector<N> {
 
     fn not(self) -> Self::Output {
         BitVector::new((!self.bits) & Self::bit_mask())
+    }
+}
+
+
+impl<const N: usize> std::ops::Add<i64> for BitVector<N> {
+    type Output = Self;
+
+    fn add(self, rhs: i64) -> BitVector<N> {
+        let result = self.bits as i64 + rhs;
+        // If the result is out of bounds, we may want to handle overflow
+        BitVector::<N>::new(result as u64) // Returning the result as BitVector
     }
 }
 

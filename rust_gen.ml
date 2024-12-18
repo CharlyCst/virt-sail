@@ -83,6 +83,7 @@ type rs_exp =
     | RsFor of rs_type * rs_lit * rs_lit * rs_exp
     | RsStruct of rs_type * (string * rs_exp) list
     | RsStructAssign of rs_exp * string * rs_exp
+    | RsReturn of rs_exp
     | RsTodo of string
 and rs_lexp =
     | RsLexpId of string
@@ -338,6 +339,7 @@ let rec string_of_rs_exp (n: int) (exp: rs_exp) : string =
             (indent n)
         | RsStructAssign (exp, field, value) -> 
             Printf.sprintf "%s.%s = %s; %s" (string_of_rs_exp n exp) field (string_of_rs_exp n value) (string_of_rs_exp n exp)
+        | RsReturn exp -> Printf.sprintf "return %s;" (string_of_rs_exp n exp)
         | RsTodo text -> Printf.sprintf "todo!(\"%s\")" text
 and string_of_rs_lexp (n: int) (lexp: rs_lexp) : string =
     match lexp with

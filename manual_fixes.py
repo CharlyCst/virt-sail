@@ -12,6 +12,8 @@ def replace(old, new):
     global file_content
     file_content = file_content.replace(old, new)
 
+
+# Fixes for CSR operations
 replace("#[derive(Eq, PartialEq, Clone, Copy, Debug)]\npub enum exception {",
                                      "#[derive(Eq, PartialEq, Clone, Debug)]\npub enum exception {")
 
@@ -49,6 +51,14 @@ replace("bitvector_concat(sail_ctx.pmpcfg_n[((n * 4) + 7)].bits, bitvector_conca
                 ),\
             ),\
         )")
+
+# Fixes for pmpCheck
+replace("AccessType<()>", "AccessType")
+replace("pmpCheckRWX<const N: usize>", "pmpCheckRWX")
+replace("pmpCheckPerms<const N: usize>", "pmpCheckPerms")
+replace("pmpMatchEntry<const N: usize>", "pmpMatchEntry")
+replace("accessToFault<const N: usize>", "accessToFault")
+replace("to_bits(sail_ctx, 64, width);", "BitVector::new(64);")
 
 with open(path, 'w') as file:
     file.write(file_content)

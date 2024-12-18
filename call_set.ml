@@ -125,4 +125,5 @@ let rec get_call_set (ast: 'a ast) : SSet.t =
     let set = SSet.add "TEST" set in
     let set = SSet.add "WFI" set in
     let set = SSet.add "trap_handler" set in
+    let set = SSet.add "pmpCheck" set in
     get_call_set_rec ast set
