@@ -130,7 +130,7 @@ pub fn truncate(v: BitVector<64>, size: usize) -> BitVector<64> {
 }
 
 pub fn sys_pmp_count(_unit: ()) -> usize {
-    64
+    16
 }
 
 macro_rules! create_zero_extend_fn {
@@ -213,12 +213,12 @@ pub fn bitvector_update(v: BitVector<64>, pos: usize, value: bool) -> BitVector<
     BitVector::<64>::new((v.bits() & !mask) | ((value as u64) << pos) as u64)
 }
 
-#[derive(Eq, PartialEq, Clone, Copy, Debug)]
+#[derive(Eq, PartialEq, Clone, Copy, Debug, Default)]
 pub struct BitVector<const N: usize> {
     pub bits: u64,
 }
 
-#[derive(Eq, PartialEq, Clone, Copy, Debug)]
+#[derive(Eq, PartialEq, Clone, Copy, Debug, Default)]
 pub struct BitField<const T: usize> {
     pub bits: BitVector<T>,
 }
