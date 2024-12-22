@@ -65,8 +65,6 @@ pub fn sys_enable_writable_fiom(_unit: ()) -> bool {
 
 pub fn get_16_random_bits(_unit: ()) -> BitVector<16> {
     BitVector::<16>::new(0)
-    // let number: u64 = rand::thread_rng().gen();
-    // BitVector::<16>::new(number & ((1 << 17) - 1))
 }
 
 pub fn not_implemented(_unit: ()) -> ! {
@@ -397,8 +395,6 @@ impl<const N: usize> std::ops::Add<i64> for BitVector<N> {
 
 #[cfg(test)]
 mod tests {
-    use rand::random;
-
     use super::*;
 
     #[test]
@@ -685,8 +681,8 @@ mod tests {
 
         let mut v = BitVector::<SIZE>::new(0);
         let mut val: u64 = 0;
-        for _ in 0..100 {
-            let idx = random::<usize>() % SIZE;
+        for i in 0..100 {
+            let idx = (7689 * i + 678) % SIZE;
 
             val |= (1 as u64) << idx;
             v.set_vector_entry(idx, true);
