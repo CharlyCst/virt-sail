@@ -127,4 +127,5 @@ let rec get_call_set (ast: 'a ast) : SSet.t =
     let set = SSet.add "trap_handler" set in
     let set = SSet.add "pmpCheck" set in
     let set = SSet.add "dispatchInterrupt" set in 
+    let set = SSet.add "step_interrupts_only" set in
     get_call_set_rec ast set
