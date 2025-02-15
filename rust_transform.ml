@@ -727,12 +727,11 @@ let parametric_rewriter = {
 (* ———————————————————————— Bitfields sanitizer rewriter  ————————————————————————— *)
 
 let starts_with_mk s =
-    String.starts_with ~prefix:"Mk_" s
+    String.starts_with ~prefix:"Mk_Minterrupts" s
 
 let bitfield_sanitizer_process_body (body: rs_exp) : rs_exp = 
     match body with
-        | RsStruct (name, [(field_name, field_value)]) 
-            when name = (RsTypId "Mk_Minterrupts") ->
+        | RsStruct (name, [(field_name, field_value)]) ->
             let sanitized_value =   
                 RsBinop (RsMethodApp(field_value, "bits", []), RsBinopAnd, RsLit(RsLitBin "101010101010"))
             in 
