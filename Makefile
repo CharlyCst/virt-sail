@@ -173,7 +173,6 @@ riscv-c:
 verify: build
 	cd rust_arch/mret && cargo kani 
 
-
 decoder: build
 	./virt-sail sail_arch/decoder.sail -o ./src/lib.rs
 	python3 manual_fixes.py

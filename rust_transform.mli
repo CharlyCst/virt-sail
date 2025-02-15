@@ -40,6 +40,7 @@ val rust_remove_type_bits: rs_program -> rs_program
 val rust_prelude_func_filter: rs_program -> rs_program
 val insert_annotation_imports: rs_program -> rs_program
 val parametric_rewriter: func_transform
+val bitfield_sanitizer: func_transform
 val transform_basic_types: expr_type_transform
 val add_wildcard_match: expr_type_transform
 

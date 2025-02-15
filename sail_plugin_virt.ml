@@ -101,6 +101,7 @@ let virt_target _ _ out_file ast effect_info env =
   let rust_program = rust_prelude_func_filter rust_program in
   let rust_program = insert_annotation_imports rust_program in
   let rust_program = rust_transform_func parametric_rewriter rust_program in
+  let rust_program = rust_transform_func bitfield_sanitizer rust_program in
   let rust_program = rust_transform_expr transform_basic_types rust_program in
   let rust_program = rust_transform_expr add_wildcard_match rust_program in
 

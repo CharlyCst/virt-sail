@@ -501,6 +501,31 @@ let rec process_enum_entries (defs: 'a Libsail.Ast.def list): (string * string) 
         | h :: t -> (process_enum_entries_aux h) @ (process_enum_entries t)
         | [] -> []
 
+
+(* ———————————————————————— Generate the bitfield context  ————————————————————————— *)
+  
+let gen_enum_list (id: Ast.id) (enum_fields: string list) : (string * string) list =
+    let enum_name = string_of_id id in
+    List.map (fun e -> (e, enum_name)) enum_fields
+    
+let ast_id_list_to_string_list (members: Ast.id list) : string list = (List.map string_of_id members)
+
+let rec ast_union_type_list_to_string_list (members: Ast.type_union list) : string list = 
+    match members with 
+        | (Tu_aux (Tu_ty_id (typ, id), annot)) :: v -> (string_of_id id) :: ast_union_type_list_to_string_list v
+        | [] -> []
+       
+let process_enum_entries_aux (DEF_aux (def, annot)): (string * string) list =
+match def with
+    | DEF_type (TD_aux (TD_enum (id, members, _), _)) -> gen_enum_list id (ast_id_list_to_string_list members)
+    | DEF_type (TD_aux (TD_variant (id, _, members, _), _)) -> gen_enum_list id (ast_union_type_list_to_string_list members)
+    | _ -> []
+    
+let rec process_enum_entries (defs: 'a Libsail.Ast.def list): (string * string) list =
+    match defs with
+        | h :: t -> (process_enum_entries_aux h) @ (process_enum_entries t)
+        | [] -> []
+
 (* ———————————————————————— Translation function  ————————————————————————— *)
 
 let sail_to_rust (ast: 'a ast) (ctx: context) : rs_program =

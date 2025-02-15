@@ -723,6 +723,38 @@ let parametric_rewriter = {
   func = parametric_rewriter_func
 }
 
+
+(* ———————————————————————— Bitfields sanitizer rewriter  ————————————————————————— *)
+
+let starts_with_mk s =
+    String.starts_with ~prefix:"Mk_" s
+
+let bitfield_sanitizer_process_body (body: rs_exp) : rs_exp = 
+    match body with
+        | RsStruct (name, [(field_name, field_value)]) 
+            when name = "Mk_Minterrupts"->
+            let sanitized_value =   
+                RsBinop (RsMethodApp(field_value, "bits", []), RsBinopAnd, RsLit(RsLitBin "010101"))
+            in 
+            let wrapped_value = 
+                RsStaticApp(RsTypId "BitVector", "new", [sanitized_value]) 
+            in
+            RsStruct (name, [(field_name, wrapped_value)])
+        | _ -> body
+
+          
+let bitfield_sanitizer_func (func: rs_fn): rs_fn = 
+    if (starts_with_mk func.name) then {
+        name = func.name; 
+        args = func.args;
+        signature = func.signature;
+        body = (bitfield_sanitizer_process_body func.body);
+    } else 
+        func
+let bitfield_sanitizer = {
+  func = bitfield_sanitizer_func
+}
+
 (* ———————————————————————— BasicTypes rewriter  ————————————————————————— *)
 
 let transform_basic_types_exp (exp: rs_exp) : rs_exp = 
