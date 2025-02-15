@@ -732,9 +732,9 @@ let starts_with_mk s =
 let bitfield_sanitizer_process_body (body: rs_exp) : rs_exp = 
     match body with
         | RsStruct (name, [(field_name, field_value)]) 
-            when name = "Mk_Minterrupts"->
+            when name = (RsTypId "Mk_Minterrupts") ->
             let sanitized_value =   
-                RsBinop (RsMethodApp(field_value, "bits", []), RsBinopAnd, RsLit(RsLitBin "010101"))
+                RsBinop (RsMethodApp(field_value, "bits", []), RsBinopAnd, RsLit(RsLitBin "101010101010"))
             in 
             let wrapped_value = 
                 RsStaticApp(RsTypId "BitVector", "new", [sanitized_value]) 
